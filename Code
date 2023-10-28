@@ -1,81 +1,63 @@
-```python
+# Import necessary libraries
 import pandas as pd
 import numpy as np
 from sklearn import tree
 from sklearn.metrics import accuracy_score
 import graphviz
-```
-- These lines import the necessary Python libraries for data manipulation, machine learning, and visualization, including pandas, numpy, scikit-learn (sklearn), and graphviz.
 
-```python
+# Replace with the actual path to your dataset and specify the delimiter
 file_path = "/content/bank.csv"  # Change this to the actual path of your file
 delimiter = ';'
-```
-- You should replace `"/content/bank.csv"` with the actual file path of your dataset. The `delimiter` variable specifies the delimiter used in the CSV file.
 
-```python
+# Read the data into a DataFrame
 df = pd.read_csv(file_path, delimiter)
-```
-- This line reads the data from the CSV file into a pandas DataFrame (`df`).
 
-```python
-data = df
-df.describe
+# Display the first few rows of the dataset
 print(df.head())
-```
-- This code duplicates the DataFrame `df` into `data`. The `describe` function is not executed, and `df.head()` is used to display the first few rows of the dataset.
 
-```python
-data.head(2)
-```
-- This line displays the first two rows of the dataset to get an initial look at the data.
+# Assuming you want to label-encode categorical data
+from sklearn import preprocessing
 
-```python
 le = preprocessing.LabelEncoder()
 for i in range(0, 17):
-    data.iloc[:, i] = le.fit_transform(data.iloc[:, i])
-data.head(2)
-```
-- Here, label encoding is applied to convert categorical variables into numerical format. A `LabelEncoder` is used to transform the data.
+    df.iloc[:, i] = le.fit_transform(df.iloc[:, i])
 
-```python
-nrows = len(data.index)
+# Split the data into training and test sets
+nrows = len(df.index)
 percentage = round((nrows * 70) / 100)
-trainingData = data.iloc[:percentage, :]
-testData = data.iloc[percentage:, :]
-```
-- These lines split the dataset into training data (70%) and test data (30%).
+trainingData = df.iloc[:percentage, :]
+testData = df.iloc[percentage:, :]
 
-```python
+print("Number of training data examples: " + str(len(trainingData.index))
+print("Number of test examples: " + str(len(testData.index))
+
+# Define features and target variables for training and test sets
 train_x = trainingData[["job", "marital", "education", "balance", "housing"]]
 train_y = trainingData["loan"]
 
 test_x = testData[["job", "marital", "education", "balance", "housing"]]
 test_y = testData["loan"]
-```
-- The features (`train_x` and `test_x`) and the target variable (`train_y` and `test_y`) are defined for both the training and test datasets.
 
-```python
+# Create a decision tree classifier with entropy as the criterion
 treeClassifier = tree.DecisionTreeClassifier(criterion="entropy")
-treeClassifier.fit(train_x, train_y)
-```
-- A decision tree classifier is created with the entropy criterion, and it is trained on the training data.
 
-```python
+# Train the decision tree classifier
+treeClassifier.fit(train_x, train_y)
+
+# Predict and evaluate on the training set
 prediction = treeClassifier.predict(train_x)
 accuracyScore = accuracy_score(train_y, prediction)
 print("The trained tree has an accuracy score on the train set of " + str(accuracyScore))
-```
-- The accuracy of the trained decision tree on the training data is calculated and printed.
 
-```python
+# Predict and evaluate on the test set
 prediction = treeClassifier.predict(test_x)
 accuracyScore = accuracy_score(test_y, prediction)
 print("The trained tree has an accuracy score on the test set of " + str(accuracyScore))
-```
-- The accuracy of the trained decision tree on the test data is calculated and printed.
 
-```python
+# Visualize the decision tree with a depth of 4 using Graphviz
+featureNames = ["job", "marital", "education", "balance", "housing"]
+classNames = ["no", "yes"]
+
 dot_data = tree.export_graphviz(
     decision_tree=treeClassifier,
     feature_names=featureNames,
@@ -86,10 +68,8 @@ dot_data = tree.export_graphviz(
 )
 graph = graphviz.Source(dot_data)
 graph
-```
-- This code exports and visualizes the decision tree using Graphviz. The `max_depth` parameter limits the depth of the tree visualization to improve readability.
 
-```python
+# Evaluate decision trees with different depths
 for i in range(3, 11):
     treeClassifier = tree.DecisionTreeClassifier(criterion="entropy", max_depth=i)
     treeClassifier.fit(train_x, train_y)
@@ -101,7 +81,3 @@ for i in range(3, 11):
     prediction = treeClassifier.predict(test_x)
     accuracyScore = accuracy_score(test_y, prediction)
     print("The trained tree with depth " + str(i) + " has an accuracy score on the test set of " + str(accuracyScore) + "\n")
-```
-- This loop builds and evaluates decision tree classifiers with different depths ranging from 3 to 10, printing the accuracy scores for both training and test datasets.
-
-These explanations should help you create a detailed README for your GitHub repository, making it clear how the code works and how users can use and modify it for their own purposes.

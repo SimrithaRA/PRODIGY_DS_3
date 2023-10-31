@@ -4,10 +4,6 @@
 
 This repository contains a Python script that demonstrates how to build a decision tree classifier to predict whether a customer will purchase a product or service based on their demographic and behavioral data. The dataset used in this example is the Bank Marketing dataset from the UCI Machine Learning Repository.
 
-## Getting Started
-
-These instructions will help you set up and run the decision tree classifier code on your local machine.
-
 ### Prerequisites
 
 To run the code, you will need the following libraries and tools installed:
@@ -19,22 +15,6 @@ To run the code, you will need the following libraries and tools installed:
   - numpy
   - scikit-learn (sklearn)
   - graphviz
-
-### Installation
-
-1. Clone this repository to your local machine:
-
-   ```bash
-   git clone https://github.com/yourusername/decision-tree-customer-prediction.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd decision-tree-customer-prediction
-   ```
-
-3. Ensure you have the necessary prerequisites installed.
 
 ## Usage
 
@@ -48,5 +28,4 @@ The script performs the following steps:
 - Splits the data into training and test sets.
 - Builds a decision tree classifier with different depths and evaluates its accuracy on both the training and test sets.
 - Visualizes the decision tree using Graphviz.
-
 ---
